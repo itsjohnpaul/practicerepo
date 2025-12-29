@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JOHN'S Chatbot</title>
+<style>
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
+}
+h2 {
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  font-size: 2.5rem;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+#chatWindow {
+  background: rgba(0, 0, 0, 0.3);
+  width: 600px;
+  max-width: 95vw;
+  height: 600px;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+.message {
+  margin: 14px 0;
+  padding: 18px 24px;
+  border-radius: 24px;
+  max-width: 75%;
+  line-height: 1.6;
+  font-size: 1.2rem;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+  word-wrap: break-word;
+  transition: background-color 0.3s ease;
+}
+.user {
+  background: #4e9af1;
+  color: #f0f6ff;
+  margin-left: auto;
+  text-align: right;
+  border-bottom-right-radius: 8px;
+}
+.bot {
+  background: #845ef7;
+  color: #f7f5ff;
+  margin-right: auto;
+  text-align: left;
+  border-bottom-left-radius: 8px;
+}
+#inputArea {
+  display: flex;
+  width: 600px;
+  max-width: 95vw;
+  margin-top: 25px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+}
+#messageInput {
+  flex-grow: 1;
+  padding: 20px 30px;
+  border-radius: 40px 0 0 40px;
+  border: none;
+  font-size: 1.4rem;
+  color: #222;
+  outline: none;
+  background: #f5f5f5;
+  transition: box-shadow 0.3s ease;
+}
+#messageInput:focus {
+  box-shadow: 0 0 14px #845ef7;
+}
+#sendBtn {
+  padding: 0 35px;
+  border: none;
+  border-radius: 0 40px 40px 0;
+  background: #5f3dc4;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+#sendBtn:hover:not(:disabled) {
+  background: #7c59f7;
+}
+#sendBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+</style>
+
+</head>
+<body>
+  <h2>JOHNS'S Chatbot</h2>
+  <div id="chatWindow"></div>
+  <div id="inputArea">
+    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById('chatWindow');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function addMessage(text, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message', sender);
+      msgDiv.textContent = text;
+      chatWindow.appendChild(msgDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      messageInput.value = '';
+      sendBtn.disabled = true;
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text }),
+        });
+
+        const data = await response.json();
+        addMessage(data.reply, 'bot');
+      } catch (error) {
+        addMessage("Error contacting server", 'bot');
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+</body>
+</html>
