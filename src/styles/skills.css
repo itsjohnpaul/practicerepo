@@ -1,0 +1,51 @@
+.skill {
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+.ski {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px 15px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(31, 31, 31, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.ski:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.skilim {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  border: 5px solid blue;
+}
+
+.ski p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .skill {
+    margin: 50px auto;
+    gap: 20px;
+  }
+
+  .skilim {
+    width: 60px;
+    height: 60px;
+  }
+}

@@ -1,0 +1,36 @@
+.footer {
+  margin-top: 80px;
+  padding: 30px 20px;
+    background-color: rgb(36, 8, 135);
+  color: #ffffff;
+  text-align: center;
+}
+
+.footer h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.footer p {
+  font-size: 14px;
+  color: #cbd5f5;
+  margin-bottom: 15px;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.socials a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.socials a:hover {
+  color: #93c5fd;
+}

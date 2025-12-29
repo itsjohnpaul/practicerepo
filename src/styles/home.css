@@ -1,0 +1,88 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+box-shadow: 0 0 20px rgba(32, 32, 33, 0.6);
+  margin-top: 50px;
+  background-color: rgb(152, 169, 183);
+  border-radius: 50px;
+}
+.desc {
+  display: none;
+}
+
+.title:hover + p + .desc {
+  display: block;
+}
+
+.bio {
+  flex: 1;
+}
+
+.bio h2 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.bio h3 {
+  font-size: 24px;
+  color: #faf4f4;
+  margin-bottom: 25px;
+}
+
+.bio .view {
+  padding: 12px 30px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bio .view:hover {
+  background-color: #4338ca;
+  transform: scale(1.05);
+}
+
+.profile {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #4f46e5;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 30px;
+  }
+
+  .profile img {
+    width: 220px;
+    height: 220px;
+  }
+
+  .bio h2 {
+    font-size: 32px;
+  }
+
+  .bio h3 {
+    font-size: 20px;
+  }
+}

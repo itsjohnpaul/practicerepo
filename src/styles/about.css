@@ -1,0 +1,49 @@
+
+
+#about {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+
+.ti {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.ti h1 {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.ti h1::after {
+  content: "";
+  width: 80px;
+  height: 4px;
+  background: #4f46e5;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.para {
+  margin-top: 30px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #444;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .ti h1 {
+    font-size: 32px;
+  }
+
+  .para {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
