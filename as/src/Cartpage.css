@@ -1,0 +1,164 @@
+.page {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 15px;
+  font-family: Arial, sans-serif;
+}
+
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.6rem;
+  color: #333;
+  transition: color 0.3s;
+}
+
+body.dark .title {
+  color: #e2e8f0;
+}
+
+
+.li {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.3s;
+}
+
+
+.item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+
+body.dark .item {
+  background: linear-gradient(145deg, #1e293b, #334155);
+  border-color: #334155;
+  color: white;
+}
+
+
+.img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #fff;
+  padding: 6px;
+  transition: background 0.3s;
+}
+
+body.dark .img {
+  background: #334155;
+}
+
+
+.info {
+  flex: 1;
+}
+
+
+.name {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  transition: color 0.3s;
+}
+
+body.dark .name {
+  color: #e2e8f0;
+}
+
+
+.price,
+.qty {
+  margin: 3px 0;
+  color: #555;
+  transition: color 0.3s;
+}
+
+body.dark .price,
+body.dark .qty {
+  color: #cbd5e1;
+}
+
+
+.remove {
+  padding: 6px 12px;
+  background-color: #ff5555;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.remove:hover {
+  background-color: #dd4444;
+  transform: scale(1.05);
+}
+
+
+.in {
+  padding: 6px 12px;
+  background-color: #28d230;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.in:hover {
+  background-color: #37a113;
+  transform: scale(1.05);
+}
+.de {
+  padding: 6px 12px;
+  background-color: #bb1616;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.de:hover {
+  background-color: #c11717;
+  transform: scale(1.05);
+}
+
+
+
+.total {
+  margin-top: 25px;
+  text-align: right;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #111;
+  transition: color 0.3s;
+}
+
+body.dark .total {
+  color: white;
+}
