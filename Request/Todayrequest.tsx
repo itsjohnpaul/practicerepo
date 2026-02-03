@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUmrahFilters } from "../Request/useUmrahFilters";
 import ThreeDotMenu from "./ThreeDotMenu";
 import { useNavigate } from "react-router-dom";
 import Requesterbox from "./Requesterpopup";
 import Performerpopup from "./Performerpopup";
+
+const ITEMS_PER_PAGE = 10; // ✅ records per page
+
 const Todayrequest = () => {
   const {
     activeTab,
@@ -20,16 +23,29 @@ const Todayrequest = () => {
 
   const navigate = useNavigate();
 
-  // ✅ selected row states
   const [selectedRequester, setSelectedRequester] = useState<any | null>(null);
   const [selectedPerformer, setSelectedPerformer] = useState<any | null>(null);
+
+  // ✅ PAGINATION STATE
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // reset page when filters/search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, statusFilter, vipFilter, search]);
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedData = filteredData.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   return (
     <div className="min-h-screen space-y-6 bg-[#f7f5ec] p-6">
       {/* ---------- HEADER ---------- */}
-      <div className="flex items-center gap-3">
-        <h1 className="text-lg font-semibold">Requests for Today</h1>
-      </div>
+      <h1 className="text-lg font-semibold">Requests for Today</h1>
 
       {/* ---------- TABS ---------- */}
       <div className="flex gap-6 border-b bg-white px-4">
@@ -37,10 +53,11 @@ const Todayrequest = () => {
           <button
             key={tab}
             onClick={() => resetFilters(tab)}
-            className={`relative pb-3 text-sm ${activeTab === tab
-              ? "text-blue-600 font-medium border-b-2 border-blue-600"
-              : "text-gray-500"
-              }`}
+            className={`relative pb-3 text-sm ${
+              activeTab === tab
+                ? "text-blue-600 font-medium border-b-2 border-blue-600"
+                : "text-gray-500"
+            }`}
           >
             {tab}
             <span className="ml-2 rounded-full bg-gray-100 px-2 text-xs">
@@ -48,13 +65,12 @@ const Todayrequest = () => {
                 ? filteredData.length
                 : filteredData.filter(i => i.status === tab).length}
             </span>
-            <span> | </span>
           </button>
         ))}
       </div>
 
       {/* ---------- FILTER BAR ---------- */}
-      <div className="flex items-center gap-3 rounded bg-white p-4 shadow-sm ">
+      <div className="flex items-center gap-3 rounded bg-white p-4 shadow-sm">
         <select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value as any)}
@@ -73,10 +89,11 @@ const Todayrequest = () => {
             <button
               key={type}
               onClick={() => setVipFilter(type as any)}
-              className={`px-4 py-2 text-sm ${vipFilter === type
-                ? "bg-blue-100 text-blue-600 border border-blue-900"
-                : "text-gray-500"
-                }`}
+              className={`px-4 py-2 text-sm ${
+                vipFilter === type
+                  ? "bg-blue-100 text-blue-600 border border-blue-900"
+                  : "text-gray-500"
+              }`}
             >
               {type === "All" ? "All" : `${type} User`}
             </button>
@@ -93,7 +110,7 @@ const Todayrequest = () => {
       </div>
 
       {/* ---------- TABLE ---------- */}
-      <div className="overflow-hidden rounded bg-white shadow-sm min-h-screen">
+      <div className="overflow-hidden rounded bg-white shadow-sm">
         <table className="min-w-full text-sm">
           <thead className="bg-[#f1eddd] text-left">
             <tr>
@@ -108,17 +125,14 @@ const Todayrequest = () => {
           </thead>
 
           <tbody className="divide-y">
-            {filteredData.length === 0 ? (
+            {paginatedData.length === 0 ? (
               <tr>
-                <td
-                  colSpan={7}
-                  className="py-12 text-center text-gray-400"
-                >
+                <td colSpan={7} className="py-12 text-center text-gray-400">
                   No data found
                 </td>
               </tr>
             ) : (
-              filteredData.map(item => (
+              paginatedData.map(item => (
                 <tr key={item.requestId} className="hover:bg-gray-50">
                   <td className="px-4 py-3">{item.requestId}</td>
 
@@ -129,7 +143,6 @@ const Todayrequest = () => {
                     >
                       {item.umrahFor.name}
                     </p>
-
                     <span className="text-xs text-blue-600">
                       {item.umrahFor.type === "VIP User" ? "💎 VIP User" : ""}
                     </span>
@@ -148,7 +161,9 @@ const Todayrequest = () => {
                           {item.performer.name}
                         </p>
                         <span className="text-xs text-orange-600">
-                          {item.performer.type === "VIP Performer" ? "👑 VIP Performer" : ""}
+                          {item.performer.type === "VIP Performer"
+                            ? "👑 VIP Performer"
+                            : ""}
                         </span>
                       </>
                     ) : (
@@ -162,7 +177,6 @@ const Todayrequest = () => {
                     >
                       {item.status}
                     </span>
-
                   </td>
 
                   <td className="px-4 py-3">
@@ -177,11 +191,35 @@ const Todayrequest = () => {
               ))
             )}
           </tbody>
-
         </table>
+
+        {/* ---------- PAGINATION ---------- */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => p - 1)}
+              className="flex items-center gap-1 rounded border px-3 py-1 text-sm disabled:opacity-40"
+            >
+              ← Prev
+            </button>
+
+            <span className="text-sm text-gray-600">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(p => p + 1)}
+              className="flex items-center gap-1 rounded border px-3 py-1 text-sm disabled:opacity-40"
+            >
+              Next →
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* ---------- REQUESTER MODAL ---------- */}
+      {/* ---------- MODALS ---------- */}
       {selectedRequester && (
         <Requesterbox
           boxstate={selectedRequester}
@@ -189,10 +227,11 @@ const Todayrequest = () => {
         />
       )}
 
-      {/* ---------- PERFORMER MODAL ---------- */}
       {selectedPerformer && (
-        <Performerpopup performarstate={selectedPerformer}
-          onClose={() => setSelectedPerformer(null)} />
+        <Performerpopup
+          performarstate={selectedPerformer}
+          onClose={() => setSelectedPerformer(null)}
+        />
       )}
     </div>
   );
