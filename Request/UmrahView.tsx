@@ -28,7 +28,7 @@ const DropdownSection = ({ title, children }: { title: string; children: React.R
 };
 
 /* ---------- Row Component for Consistency ---------- */
-const InfoRow = ({ label, value, isVip = false }: { label: string; value: any; isVip?: boolean }) => (
+const InfoRow = ({ label, value, isVip = false }: { label: string; value: any; isVip?: any }) => (
   <div className="flex border-b border-gray-50 py-3 last:border-0">
     <span className="w-1/3 text-sm text-gray-400">{label}</span>
     <span className="flex w-2/3 items-center gap-2 text-sm font-medium text-gray-700">
@@ -117,6 +117,7 @@ const UmrahView = () => {
           case "Performer Requested":
           case "Performer Accepted":
           case "Umrah In Progress":
+          case "Umrah Completed":
             return (
               <>
                 <InfoRow
@@ -129,14 +130,29 @@ const UmrahView = () => {
               </>
             );
           case "Performer Not Assigned":
-            return <p className="py-4 text-sm text-gray-500 italic">No performer assigned yet.</p>;
+            return ( <>
+                <InfoRow
+                  label="Performer Name"
+                  value={data.performer?.name}
+                  isVip={false}
+                />
+                <InfoRow label="Assigned By" value={data.performer?.performerDetail?.assignedby} />
+                <InfoRow label="Assigned Date" value={data.performer?.performerDetail?.assignedDate} />
+              </>);
           default:
             return <p className="py-4 text-sm text-gray-500">No performer details available.</p>;
         }
       })()}
     </DropdownSection>
+    {data.status === "Umrah Completed" && (
+          <DropdownSection title="Requester Feedback">
+            <InfoRow label="Ratings" value={""}/>
+ <InfoRow label="Comments" value={data.umrahFor.specialnotes}/>
+
+          </DropdownSection>
+        )}
   </div>
-</div>
+</div> 
       </div>
     </div>
   );
