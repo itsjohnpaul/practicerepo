@@ -4,8 +4,9 @@ import ThreeDotMenu from "./ThreeDotMenu";
 import { useNavigate } from "react-router-dom";
 import Requesterbox from "./Requesterpopup";
 import Performerpopup from "./Performerpopup";
-
-const ITEMS_PER_PAGE = 10; // ✅ records per page
+import SearchBar from "./SearchBox"; // Adjust path as needed
+import AssignPerformer from "./AssignPerformer";
+const ITEMS_PER_PAGE = 10;
 
 const Todayrequest = () => {
   const {
@@ -25,6 +26,8 @@ const Todayrequest = () => {
 
   const [selectedRequester, setSelectedRequester] = useState<any | null>(null);
   const [selectedPerformer, setSelectedPerformer] = useState<any | null>(null);
+  // Add this with your other useState hooks
+  const [assigningItem, setAssigningItem] = useState<any | null>(null);
 
   // ✅ PAGINATION STATE
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +40,7 @@ const Todayrequest = () => {
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+
   const paginatedData = filteredData.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
@@ -53,11 +57,10 @@ const Todayrequest = () => {
           <button
             key={tab}
             onClick={() => resetFilters(tab)}
-            className={`relative pb-3 text-sm ${
-              activeTab === tab
+            className={`relative pb-3 text-sm ${activeTab === tab
                 ? "text-blue-600 font-medium border-b-2 border-blue-600"
                 : "text-gray-500"
-            }`}
+              }`}
           >
             {tab}
             <span className="ml-2 rounded-full bg-gray-100 px-2 text-xs">
@@ -89,25 +92,24 @@ const Todayrequest = () => {
             <button
               key={type}
               onClick={() => setVipFilter(type as any)}
-              className={`px-4 py-2 text-sm ${
-                vipFilter === type
+              className={`px-4 py-2 text-sm ${vipFilter === type
                   ? "bg-blue-100 text-blue-600 border border-blue-900"
                   : "text-gray-500"
-              }`}
+                }`}
             >
               {type === "All" ? "All" : `${type} User`}
             </button>
           ))}
         </div>
 
-        <input
-          type="text"
-          placeholder="Search"
+        {/* ---------- SEARCH INPUT ---------- */}
+        <SearchBar
           value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="ml-auto w-64 rounded border px-3 py-2 text-sm"
+          onChange={setSearch}
+          placeholder="Search requests..."
         />
       </div>
+
 
       {/* ---------- TABLE ---------- */}
       <div className="overflow-hidden rounded bg-white shadow-sm">
@@ -182,9 +184,7 @@ const Todayrequest = () => {
                   <td className="px-4 py-3">
                     <ThreeDotMenu
                       onView={() => navigate(`/umrah/${item.requestId}`)}
-                      onAssignPerformer={() =>
-                        console.log("Assign performer", item.requestId)
-                      }
+                      onAssignPerformer={() => setAssigningItem(item)} // Now sets the state instead of just logging
                     />
                   </td>
                 </tr>
@@ -231,6 +231,12 @@ const Todayrequest = () => {
         <Performerpopup
           performarstate={selectedPerformer}
           onClose={() => setSelectedPerformer(null)}
+        />
+      )}
+      {/* --- NEW ASSIGNMENT MODAL --- */}
+      {assigningItem && (
+        <AssignPerformer
+          onClose={() => setAssigningItem(null)}
         />
       )}
     </div>
