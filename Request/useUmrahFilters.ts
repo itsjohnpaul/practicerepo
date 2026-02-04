@@ -29,7 +29,8 @@ export const useUmrahFilters = () => {
     if (
       search &&
       !item.umrahFor.name.toLowerCase().includes(search.toLowerCase()) &&
-      !item.requestId.toLowerCase().includes(search.toLowerCase())
+      !item.requestId.toLowerCase().includes(search.toLowerCase()) &&
+      !item.performer?.name?.toLowerCase().includes(search.toLowerCase())
     ) {
       return false;
     }
@@ -64,4 +65,5 @@ export const useUmrahFilters = () => {
       "Umrah Completed",
     ] as Tab[],
   };
+
 };
